@@ -1,0 +1,10 @@
+*.swp
+*.pyc
+*.log
+*.md
+*.yml
+Dockerfile
+__pycache__/
+.pytest_cache/
+chart/
+venv/

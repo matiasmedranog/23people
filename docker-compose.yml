@@ -1,0 +1,38 @@
+version: '3.3'
+services:
+  database:
+    build:
+      context: ./api/database
+      dockerfile: Dockerfile
+    environment:
+      MYSQL_HOST: database
+    ports:
+      - '3306:3306'
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    networks:
+      - network
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file: api/.env
+    environment:
+      WAIT_HOSTS: database:3306
+      MYSQL_HOST: database
+    ports:
+      - '5000:5000'
+    restart: always
+    depends_on:
+      - database
+    links:
+      - database
+    networks:
+      - network
+    volumes:
+      - "./api:/api"
+
+networks:
+  network:
+    driver: bridge
