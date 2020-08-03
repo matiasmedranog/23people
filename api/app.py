@@ -9,7 +9,7 @@ from datetime import timedelta
 app = Flask(__name__)
 load_dotenv(find_dotenv())
 logs.get_logger()
-app.register_blueprint(people, url_prefix=os.getenv('URL_PREFIX')+'/people')
+app.register_blueprint(people, url_prefix=os.getenv('URL_PREFIX'))
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=60)
 

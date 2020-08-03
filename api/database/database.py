@@ -27,4 +27,31 @@ class People(db.Model):
         self.picture_url = picture_url
 
     def __repr__(self):
-        return '' % self.id
+        return '<People %r>' % self.id
+
+    def add_user(self):
+        newPeople = People(name=self['name'], last_name=self['last_name'], age=self['age'], picture_url=self['picture_url'])
+        db.session.add(newPeople)
+        db.session.commit()
+        db.session.flush()
+        return self
+
+    def get_users():
+        result = []
+        for people in People.query.all():
+            print(str(people))
+            result.append(people.__dict__)
+        return result
+
+    def get_users_by_id(id):
+        return People.query.filter(People.id == id).first()
+
+    def update_users_by_id(id):
+        newPeople = People(name=self['name'], last_name=self['last_name'], age=self['age'], picture_url=self['picture_url'])
+        db.session.add(newPeople)
+        db.session.commit()
+        db.session.flush()
+        return self
+
+    def delete_users_by_id(id):
+        return People.query.filter(People.id == id).delete(synchronize_session=False)
