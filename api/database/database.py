@@ -1,8 +1,9 @@
 import os
-from flask import current_app as app
+import json
+from flask import jsonify, current_app as app
 from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
-
+row2dict = lambda r: {c.name: str(getattr(r, c.name)) for c in r.__table__.columns}
 
 class People(db.Model):
     __tablename__ = "people"
@@ -30,8 +31,7 @@ class People(db.Model):
         return '<People %r>' % self.id
 
     def add_user(self):
-        newPeople = People(name=self['name'], last_name=self['last_name'], age=self['age'], picture_url=self['picture_url'])
-        db.session.add(newPeople)
+        db.session.add(People(self['name'], self['last_name'], self['age'], self['picture_url']))
         db.session.commit()
         db.session.flush()
         return self
@@ -39,19 +39,31 @@ class People(db.Model):
     def get_users():
         result = []
         for people in People.query.all():
-            print(str(people))
-            result.append(people.__dict__)
-        return result
+            pdict = row2dict(people)
+            pdict.pop('_sa_instance_state', None)
+            result.append(pdict)
+        return jsonify(result)
 
     def get_users_by_id(id):
-        return People.query.filter(People.id == id).first()
+        if(People.query.get(id)):
+            return row2dict(People.query.get(id))
+        else:
+            return None
 
-    def update_users_by_id(id):
-        newPeople = People(name=self['name'], last_name=self['last_name'], age=self['age'], picture_url=self['picture_url'])
-        db.session.add(newPeople)
-        db.session.commit()
-        db.session.flush()
-        return self
+    def update_users_by_id(id, self):
+        if(db.session.query(People).filter(People.id==id).update(self, synchronize_session=False)):
+            db.session.query(People).filter(People.id==id).update(self, synchronize_session=False)
+            db.session.commit()
+            db.session.flush()
+            return 200
+        else:
+            return None
 
     def delete_users_by_id(id):
-        return People.query.filter(People.id == id).delete(synchronize_session=False)
+        if(People.query.get(id).delete(synchronize_session=False)):
+            People.query.get(id).delete(synchronize_session=False)
+            db.session.commit()
+            db.session.flush()
+            return 200
+        else:
+            return None

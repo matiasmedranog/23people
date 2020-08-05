@@ -16,7 +16,6 @@ def people_all():
         else:
             abort(400)
     elif request.method == 'GET':
-        logger.info(People.get_users())
         return People.get_users()
 
 
@@ -24,9 +23,9 @@ def people_all():
 def people_id(id):
     if request.method == 'PUT':
         if request.headers.getlist('Content-Type') == ['application/json']:
-            if(request.get_json() != None):
-                if People.update_users_by_id(id) != None:
-                    return 200
+            if(request.get_json('name') != None):
+                if People.update_users_by_id(id, request.get_json()) != None:
+                    return Response(status=200)
                 else:
                     abort(404)
             else:
@@ -35,7 +34,7 @@ def people_id(id):
             abort(400)
     elif request.method == 'DELETE':
         if People.delete_users_by_id(id) != None: 
-            return jsonify(People.get_users_by_id(id))
+            return Response(status=200)
         else:
             abort(404)
     elif request.method == 'GET':
