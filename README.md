@@ -12,7 +12,7 @@ docker-compose up
 
 User creation:
 ```bash
-curl -H "Content-Type: application/json" -X POST 0.0.0.0:5000/api/v1/people -d '{"name":"Diego", "last_name":"Medrano", "age":16, "picture_url":"htttp://example.com/diego"}'
+curl -X POST -H "Content-Type: application/json" 0.0.0.0:5000/api/v1/people -d '{"name":"Matias", "last_name":"Medrano", "age":26, "picture_url":"htttp://example.com/matias"}'
 ```
 Get all users:
 ```bash
@@ -24,7 +24,7 @@ curl -H "Content-Type: application/json"   0.0.0.0:5000/api/v1/people/{id}
 ```
 Update user:
 ```bash
-curl -X PUT -H "Content-Type: application/json"   0.0.0.0:5000/api/v1/people/{id} -d '{"name":"Diego", "last_name":"Medrano", "age":16, "picture_url":"htttp://example.com/diego"}'
+curl -X PUT -H "Content-Type: application/json"   0.0.0.0:5000/api/v1/people/{id} -d '{"name":"Ignacio", "last_name":"Medrano", "age":22, "picture_url":"htttp://example.com/ignacio"}'
 ```
 Delete user:
 ```bash
