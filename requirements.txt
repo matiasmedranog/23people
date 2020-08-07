@@ -1,4 +1,7 @@
 flask
 flask-sqlalchemy
+flake8
 python-dotenv
 pymysql
+pytest
+requests

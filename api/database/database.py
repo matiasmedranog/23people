@@ -60,8 +60,8 @@ class People(db.Model):
             return None
 
     def delete_users_by_id(id):
-        if(People.query.get(id).delete(synchronize_session=False)):
-            People.query.get(id).delete(synchronize_session=False)
+        if(db.session.query(People).filter(People.id==id).delete(synchronize_session=False)):
+            db.session.query(People).filter(People.id==id).delete(synchronize_session=False)
             db.session.commit()
             db.session.flush()
             return 200
