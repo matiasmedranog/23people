@@ -50,8 +50,9 @@ service:
   redinessPeriod: 30
 
 database:
-  uri: 'mysql+pymysql://root:root@0.0.0.0:3306/23people'
+  uri: 'mysql+pymysql://root:root@mysql-svc:3306/23people'
   notifications: False
+  waitFor: 'mysql-svc'
 
 logging:
   format: '%(asctime)s | %(levelname)-7s | 23People | %(message)s'
