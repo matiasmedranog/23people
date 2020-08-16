@@ -5,8 +5,8 @@
 replicaCount: 1
 
 image:
-  repository: people
-  pullPolicy: Never
+  repository: matiasmedranog/people
+  pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: "latest"
 
@@ -38,21 +38,27 @@ securityContext: {}
 
 service:
   type: NodePort
-  port: 80
   nodePort: 31730
   targetPort: 5000 
+  port: 5000
   host: '0.0.0.0'
   debug: True
   flaskEnv: development
   secretKey: '"iK12s34UCcdx8!42&cpn"'
-  urlPrefix: '/api/v1'
-  initialDelay: 5
-  redinessPeriod: 30
+  urlPrefix: '/v1'
+  initialDelay: 10
+  redinessPeriod: 20
 
 database:
-  uri: 'mysql+pymysql://root:root@mysql-svc:3306/23people'
+  uri: 'mysql+pymysql://root:root@people-mysql.default.svc.cluster.local:3306/23people'
   notifications: False
-  waitFor: 'mysql-svc'
+  waitFor: 'people-mysql.default.svc.cluster.local:3306'
+  waitTimeout: "60"
+
+mysql:
+  enabled: true
+  mysqlRootPassword: root
+  mysqlDatabase: 23people
 
 logging:
   format: '%(asctime)s | %(levelname)-7s | 23People | %(message)s'

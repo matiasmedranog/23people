@@ -47,15 +47,15 @@ spec:
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: /
+              path: {{ .Values.service.urlPrefix }}/people
               port: {{ .Values.service.port }}
             initialDelaySeconds: {{ .Values.service.initialDelay }}
             periodSeconds: {{ .Values.service.redinessPeriod }}
           readinessProbe:
             httpGet:
-              path: /
+              path: {{ .Values.service.urlPrefix }}/people
               port: {{ .Values.service.port }}
-            initialDelaySeconds: {{ .Values.service.initialDelay }}
+            initialDelaySeconds: 5
             periodSeconds: {{ .Values.service.redinessPeriod }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
