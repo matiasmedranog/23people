@@ -1,6 +1,6 @@
 image-name="people"
 version="latest"
-registry="sdcg1yxpz1ls"
+registry="matiasmedranog"
 
 #DOCKER
 build:
@@ -13,10 +13,10 @@ run-compose:
 	docker-compose up -d
 
 tag:
-	docker tag $(image-name):$(version) syd.ocir.io/$(registry)/$(image-name):$(version)
+	docker tag $(image-name):$(version) $(registry)/$(image-name):$(version)
 
 push:
-	docker push syd.ocir.io/$(registry)/$(image-name):$(version)
+	docker push $(registry)/$(image-name):$(version)
 
 #HELM
 install:
